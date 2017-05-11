@@ -1,0 +1,56 @@
+{
+  "Comment": "Cloudticity-Oxygen-OS-Patch-SF.",
+  "StartAt": "GetInstancePlatform",
+  "States": {
+    "GetInstancePlatform": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:023718874208:function:Cloudticity-Oxygen-GetInstancePlatform",
+      "Next": "ChoiceState"
+    },
+    "ChoiceState": {
+      "Type" : "Choice",
+      "Choices": [
+        {
+          "Variable": "$.PlatformType",
+          "StringEquals": "Windows",
+          "Next": "WindowsMatchState"
+        },
+        {
+          "Variable": "$.PlatformType",
+          "StringEquals": "Linux",
+          "Next": "LinuxMatchState"
+        }
+      ],
+      "Default": "NoMatchFound"
+    },
+
+    "WindowsMatchState": {
+      "Type" : "Task",
+      "Resource": "arn:aws:lambda:us-east-1:023718874208:function:Cloudticity-Oxygen-Windows-OS-Patching",
+      "Retry": [ {
+            "ErrorEquals": ["States.ALL"],
+            "IntervalSeconds": 6,
+            "MaxAttempts": 2,
+            "BackoffRate": 3
+         } ],
+      "Next": "wait_60_seconds"
+  
+    },
+    "wait_60_seconds": {
+      "Type": "Wait",
+      "Seconds": 60,
+      "End": true
+   },
+
+    "LinuxMatchState": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:023718874208:function:Cloudticity-Oxygen-Linux-OS-Patch",
+      "End": true
+    },
+
+    "NoMatchFound": {
+      "Type": "Fail",
+      "Cause": "No Matches!"
+    }
+  }
+}

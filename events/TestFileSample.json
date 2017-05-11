@@ -1,0 +1,8 @@
+{
+  "bucket": "cloudticity-dev-patching",
+  "fileName": "Vulnerability-updates-20170321.csv",
+  "isDryRun": false,
+  "isReboot": true,
+  "StateMachineFunctionARN": "arn:aws:states:us-east-1:023718874208:stateMachine:CloudticityOxygenOSPatching-V9QH5MUVOFP5",
+  "OutputFolder": "cloudticity-dev-patching"
+}

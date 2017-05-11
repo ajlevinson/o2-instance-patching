@@ -1,0 +1,99 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploys a State Machine that runs Cloudticity Oxygen OS Patching Step Function. Also, creates the execution Role and Policy required for the Step Function.
+Parameters:
+  GetInstancePlatformLambdaARN:
+    Description: ARN of Lambda Function to Get Instance Platform
+    Type: String
+  WindowsPatchingLambdaARN:
+    Description: ARN of Lambda Function to Patch Windows Instances
+    Type: String
+  LinuxPatchingLambdaARN:
+    Description: ARN of Lambda Function to Patch Linux Instances
+    Type: String  
+Resources:
+  StatesExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - "states.us-east-1.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+
+  StatesExecutionPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: StatesExecutionPolicy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: "lambda:InvokeFunction"
+            Resource: "*"
+      Roles:
+        - !Ref StatesExecutionRole
+
+  CloudticityOxygenOSPatching:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn: !GetAtt StatesExecutionRole.Arn
+      DefinitionString: !Sub |-
+        {
+            "Comment": "Cloudticity Oxygen OS Patching Step Function",
+            "StartAt": "GetInstancePlatform",
+            "States": {
+              "GetInstancePlatform": {
+                "Type": "Task",
+                "Resource": "${GetInstancePlatformLambdaARN}",
+                "Next": "ChoiceState"
+              },
+              "ChoiceState": {
+                "Type" : "Choice",
+                "Choices": [
+                  {
+                    "Variable": "$.PlatformType",
+                    "StringEquals": "Windows",
+                    "Next": "WindowsMatchState"
+                  },
+                  {
+                    "Variable": "$.PlatformType",
+                    "StringEquals": "Linux",
+                    "Next": "LinuxMatchState"
+                  }
+                ],
+                "Default": "NoMatchFound"
+              },
+              "WindowsMatchState": {
+                "Type" : "Task",
+                "Resource": "${WindowsPatchingLambdaARN}",
+                "Retry": [ {
+                      "ErrorEquals": ["States.ALL"],
+                      "IntervalSeconds": 60,
+                      "MaxAttempts": 2,
+                      "BackoffRate": 2.0
+                   } ],
+                "Next": "wait_60_seconds"
+            
+              },
+              "wait_60_seconds": {
+                "Type": "Wait",
+                "Seconds": 60,
+                "End": true
+             },
+
+              "LinuxMatchState": {
+                "Type": "Task",
+                "Resource": "${LinuxPatchingLambdaARN}",
+                "End": true
+              },
+
+              "NoMatchFound": {
+                "Type": "Fail",
+                "Cause": "No Matches!"
+              }
+            }
+          }

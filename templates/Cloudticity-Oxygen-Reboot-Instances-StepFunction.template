@@ -1,0 +1,88 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploys a State Machine that runs Cloudticity Oxygen Reboot Instances Step Function. Also, creates the execution Role and Policy required for the Step Function.
+Parameters:
+  GetInstancePlatformLambdaARN:
+    Description: ARN of Lambda Function to Get Instance Platform
+    Type: String
+  WindowsRebootLambdaARN:
+    Description: ARN of Lambda Function to Reboot Windows Instances
+    Type: String
+  LinuxRebootLambdaARN:
+    Description: ARN of Lambda Function to Patch Linux Instances
+    Type: String  
+Resources:
+  StatesExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - "states.us-east-1.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+
+  StatesExecutionPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: StatesExecutionPolicy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: "lambda:InvokeFunction"
+            Resource: "*"
+      Roles:
+        - !Ref StatesExecutionRole
+
+  CloudticityOxygenRebootInstances:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn: !GetAtt StatesExecutionRole.Arn
+      DefinitionString: !Sub |-
+        {
+            "Comment": "Restart AWS instances based on OS type",
+            "StartAt": "GetInstancePlatform",
+            "States": {
+              "GetInstancePlatform": {
+                "Type": "Task",
+                "Resource": "${GetInstancePlatformLambdaARN}",
+                "Next": "ChoiceState"
+              },
+              "ChoiceState": {
+                "Type" : "Choice",
+                "Choices": [
+                  {
+                    "Variable": "$.PlatformType",
+                    "StringEquals": "Windows",
+                    "Next": "RestartWindows"
+                  },
+                  {
+                    "Variable": "$.PlatformType",
+                    "StringEquals": "Linux",
+                    "Next": "RestartLinux"
+                  }
+                ],
+                "Default": "NoMatchFound"
+              },
+
+              "RestartWindows": {
+                "Type" : "Task",
+                "Resource": "${WindowsRebootLambdaARN}",
+                "End": true
+              },
+
+              "RestartLinux": {
+                "Type": "Task",
+                "Resource": "${LinuxRebootLambdaARN}",
+                "End": true
+              },
+
+              "NoMatchFound": {
+                "Type": "Fail",
+                "Cause": "No Matches!"
+              }
+            }
+          }

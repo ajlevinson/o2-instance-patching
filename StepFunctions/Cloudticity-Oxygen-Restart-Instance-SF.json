@@ -1,0 +1,44 @@
+{
+  "Comment": "Restart AWS instances based on OS type",
+  "StartAt": "GetInstancePlatform",
+  "States": {
+    "GetInstancePlatform": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:023718874208:function:GetInstancePlatform",
+      "Next": "ChoiceState"
+    },
+    "ChoiceState": {
+      "Type" : "Choice",
+      "Choices": [
+        {
+          "Variable": "$.PlatformType",
+          "StringEquals": "Windows",
+          "Next": "RestartWindows"
+        },
+        {
+          "Variable": "$.PlatformType",
+          "StringEquals": "Linux",
+          "Next": "RestartLinux"
+        }
+      ],
+      "Default": "NoMatchFound"
+    },
+
+    "RestartWindows": {
+      "Type" : "Task",
+      "Resource": "arn:aws:lambda:us-east-1:023718874208:function:Reboot-Windows-Instance",
+      "End": true
+    },
+
+    "RestartLinux": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:023718874208:function:Reboot-Linux-Instance",
+      "End": true
+    },
+
+    "NoMatchFound": {
+      "Type": "Fail",
+      "Cause": "No Matches!"
+    }
+  }
+}
