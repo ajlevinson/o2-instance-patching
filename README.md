@@ -9,7 +9,7 @@ The product is included in the "Cloudticity MSP Portfolio" Service Catalog portf
 * [Cloudticity Oxygen OS Patching](https://console.aws.amazon.com/servicecatalog/home?region=us-east-1#/product/details?productId=prod-qzmqvdkm5bpq2)
 
 
-## Manifest File Structure
+## Manifest File Structure[
 The [manifest file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) is a CSV file. Each row represents a single instance and a single KB.
 This means that if we need to patch an instance with three KBs, that instance will have three rows in the file.
 Each row contains four elements; elements are separated by commas:
@@ -33,3 +33,6 @@ The various elements in the input file are as follows:
 * [Patch Linux instance](https://github.com/Cloudticity/o2-patcher/blob/master/lib/linux_updates-patcher.js).
 * [Restart Windows instance](https://github.com/Cloudticity/o2-patcher/blob/master/lib/Reboot-Windows-Instance-patcher.js)
 * [Restart Linux instance](https://github.com/Cloudticity/o2-patcher/blob/master/lib/Reboot-Linux-Instance-patcher.js).
+
+## To-Do
+Requirments list can be founf [here[gfdgdfgdf
