@@ -1,3 +1,7 @@
+# Release 1.1
+
+Added the ability to define specific security packages to be updated.(Linux)
+======================================================================================================
 # MVP Release
 
 The requirements for the MVP release are [here](http://teamwork.cloudticity.com/#tasks/9745437).
