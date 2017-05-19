@@ -1,0 +1,151 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Deploys Lambda functions and a step function process for Cloudticity
+  Oxygen OS Patching.
+Parameters:
+  MainLoopFunctionName:
+    Description: (Required) Name for Patchers main loop Lambda FunctionName.
+    Type: String
+  GetInstancePlatformFunctionName:
+    Description: (Required) Name for Patchers GetInstancePlatform Lambda FunctionName.
+    Type: String
+  PatchWindowsFunctionName:
+    Description: (Required) Name for Patchers PatchWindows Lambda FunctionName.
+    Type: String
+  PatchLinuxFunctionName:
+    Description: (Required) Name for Patchers PatchLinux Lambda FunctionName.
+    Type: String
+  NewTopicEmail:
+    Description: (Required) When errors occur on this function, a CloudWatch metric
+      captures this.
+    Type: String
+  S3BucketwithLambdaCode:
+    Description: (Required) What S3 bucket is your function in?
+    Type: String
+  MainLoopS3FilewithLambdaCode:
+    Description: (Required) Inside of the S3 bucket, what is the folder/filename
+      of the MainLoop function?
+    Type: String
+    Default: folder/code.zip
+  GetInstancePlatformS3FilewithLambdaCode:
+    Description: (Required) Inside of the S3 bucket, what is the folder/filename
+      of the GetInstancePlatform function?
+    Type: String
+    Default: folder/code.zip
+  PatchWindowsS3FilewithLambdaCode:
+    Description: (Required) Inside of the S3 bucket, what is the folder/filename
+      of the PatchWindowsLambda function?
+    Type: String
+    Default: folder/code.zip
+  PatchLinuxS3FilewithLambdaCode:
+    Description: (Required) Inside of the S3 bucket, what is the folder/filename
+      of the PatchLinuxLambda function?
+    Type: String
+    Default: folder/code.zip
+  FunctionHandler:
+    Description: (Required) The name of the function (within your source code)
+      that Lambda calls to start running your code
+    Type: String
+    Default: index.update
+Resources:
+  PatcherMainLoopLambda:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://cloudticity-public-utilities.s3.amazonaws.com/CF-Templates/Lambda.template
+      Parameters:
+        FunctionDescription: Loops on the manifest file
+        FunctionHandler:
+          Ref: FunctionHandler
+        FunctionMemorySize: 128
+        FunctionName:
+          Ref: MainLoopFunctionName
+        FunctionRuntime: nodejs6.10
+        FunctionTimeout: !!int 120
+        NewTopicEmail:
+          Ref: NewTopicEmail
+        S3BucketwithLambdaCode:
+          Ref: S3BucketwithLambdaCode
+        S3FilewithLambdaCode:
+          Ref: MainLoopS3FilewithLambdaCode
+  GetInstancePlatformLambda:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: PatcherMainLoopLambda
+    Properties:
+      TemplateURL: https://cloudticity-public-utilities.s3.amazonaws.com/CF-Templates/Lambda.template
+      Parameters:
+        FunctionDescription: Gets the instance type. Windows or Linux
+        FunctionHandler:
+          Ref: FunctionHandler
+        FunctionMemorySize: 128
+        FunctionName:
+          Ref: GetInstancePlatformFunctionName
+        FunctionRuntime: nodejs6.10
+        FunctionTimeout: !!int 120
+        ExistingTopicARN:
+          Fn::GetAtt: PatcherMainLoopLambda.Outputs.TopicARN
+        S3BucketwithLambdaCode:
+          Ref: S3BucketwithLambdaCode
+        S3FilewithLambdaCode:
+          Ref: GetInstancePlatformS3FilewithLambdaCode
+  PatchWindowsLambda:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: PatcherMainLoopLambda
+    Properties:
+      TemplateURL: https://cloudticity-public-utilities.s3.amazonaws.com/CF-Templates/Lambda.template
+      Parameters:
+        FunctionDescription: Patch Windows OS
+        FunctionHandler:
+          Ref: FunctionHandler
+        FunctionMemorySize: 128
+        FunctionName:
+          Ref: PatchWindowsFunctionName
+        FunctionRuntime: nodejs6.10
+        FunctionTimeout: !!int 120
+        ExistingTopicARN:
+          Fn::GetAtt: PatcherMainLoopLambda.Outputs.TopicARN
+        S3BucketwithLambdaCode:
+          Ref: S3BucketwithLambdaCode
+        S3FilewithLambdaCode:
+          Ref: PatchWindowsS3FilewithLambdaCode
+  PatchLinuxLambda:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: PatcherMainLoopLambda
+    Properties:
+      TemplateURL: https://cloudticity-public-utilities.s3.amazonaws.com/CF-Templates/Lambda.template
+      Parameters:
+        FunctionDescription: Patch Linux OS
+        FunctionHandler:
+          Ref: FunctionHandler
+        FunctionMemorySize: 128
+        FunctionName:
+          Ref: PatchLinuxFunctionName
+        FunctionRuntime: nodejs6.10
+        FunctionTimeout: !!int 120
+        ExistingTopicARN:
+          Fn::GetAtt: PatcherMainLoopLambda.Outputs.TopicARN
+        S3BucketwithLambdaCode:
+          Ref: S3BucketwithLambdaCode
+        S3FilewithLambdaCode:
+          Ref: PatchLinuxS3FilewithLambdaCode
+  OSPatchingStepFunction:
+    Type: AWS::CloudFormation::Stack
+    DependsOn:
+    - PatchLinuxLambda
+    - GetInstancePlatformLambda
+    - PatchWindowsLambda
+    Properties:
+      TemplateURL: https://cloudticity-public-utilities.s3.amazonaws.com/o2-Patcher/Cloudticity-Oxygen-OS-Patching-StepFunction.template
+      Parameters:
+        GetInstancePlatformLambdaARN:
+          Fn::GetAtt: GetInstancePlatformLambda.Outputs.ARN
+        WindowsPatchingLambdaARN:
+          Fn::GetAtt: PatchWindowsLambda.Outputs.ARN
+        LinuxPatchingLambdaARN:
+          Fn::GetAtt: PatchLinuxLambda.Outputs.ARN
+Outputs:
+  StackRef:
+    Value:
+      Ref: PatcherMainLoopLambda
+  SNSTopic:
+    Value:
+      Fn::GetAtt: PatcherMainLoopLambda.Outputs.TopicARN
+Rules: {}

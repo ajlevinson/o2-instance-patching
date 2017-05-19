@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Deploys Lambda functions and a step function process for Cloudticity
+  Oxygen Restart Instances.
+Parameters:
+  RestartWindowsFunctionName:
+    Description: (Required) Name for Patchers Restart Windows Lambda FunctionName.
+    Type: String
+  RestartLinuxFunctionName:
+    Description: (Required) Name for Patchers Restart Linux Lambda FunctionName.
+    Type: String
+  ExistingTopicARN:
+    Description: (Required) When errors occur on this function, a CloudWatch metric
+      captures this.
+    Type: String
+  S3BucketwithLambdaCode:
+    Description: (Required) What S3 bucket is your function in?
+    Type: String
+  RestartWindowsS3FilewithLambdaCode:
+    Description: (Required) Inside of the S3 bucket, what is the folder/filename
+      of the RestartWindowsLambda function?
+    Type: String
+    Default: folder/code.zip
+  RestartLinuxS3FilewithLambdaCode:
+    Description: (Required) Inside of the S3 bucket, what is the folder/filename
+      of the RestartLinuxLambda function?
+    Type: String
+    Default: folder/code.zip
+  FunctionHandler:
+    Description: (Required) The name of the function (within your source code)
+      that Lambda calls to start running your code
+    Type: String
+    Default: index.update
+  GetInstancePlatformLambdaARN:
+    Description: (Required) ARN of the GetInstancePlatformLambda function?
+    Type: String
+Resources:
+  RestartWindowsLambda:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://cloudticity-public-utilities.s3.amazonaws.com/CF-Templates/Lambda.template
+      Parameters:
+        FunctionDescription: Restart Windows
+        FunctionHandler:
+          Ref: FunctionHandler
+        FunctionMemorySize: 128
+        FunctionName:
+          Ref: RestartWindowsFunctionName
+        FunctionRuntime: nodejs6.10
+        FunctionTimeout: !!int 120
+        ExistingTopicARN:
+          Ref: ExistingTopicARN
+        S3BucketwithLambdaCode:
+          Ref: S3BucketwithLambdaCode
+        S3FilewithLambdaCode:
+          Ref: RestartWindowsS3FilewithLambdaCode
+  RestartLinuxLambda:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://cloudticity-public-utilities.s3.amazonaws.com/CF-Templates/Lambda.template
+      Parameters:
+        FunctionDescription: Restart Linux
+        FunctionHandler:
+          Ref: FunctionHandler
+        FunctionMemorySize: 128
+        FunctionName:
+          Ref: RestartLinuxFunctionName
+        FunctionRuntime: nodejs6.10
+        FunctionTimeout: !!int 120
+        ExistingTopicARN:
+          Ref: ExistingTopicARN
+        S3BucketwithLambdaCode:
+          Ref: S3BucketwithLambdaCode
+        S3FilewithLambdaCode:
+          Ref: RestartLinuxS3FilewithLambdaCode
+  RestartInstancesStepFunction:
+    Type: AWS::CloudFormation::Stack
+    DependsOn:
+    - RestartWindowsLambda
+    - RestartLinuxLambda
+    Properties:
+      TemplateURL: https://cloudticity-public-utilities.s3.amazonaws.com/o2-Patcher/Cloudticity-Oxygen-Reboot-Instances-StepFunction.template
+      Parameters:
+        GetInstancePlatformLambdaARN:
+          Ref: GetInstancePlatformLambdaARN
+        WindowsRebootLambdaARN:
+          Fn::GetAtt: RestartWindowsLambda.Outputs.ARN
+        LinuxRebootLambdaARN:
+          Fn::GetAtt: RestartLinuxLambda.Outputs.ARN
+Outputs:
+  StackRef:
+    Value:
+      Ref: RestartWindowsLambda
+Rules: {}
