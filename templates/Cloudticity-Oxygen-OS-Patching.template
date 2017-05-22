@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: 2010-09-09
+AWSTemplateFormatVersion: '2010-09-09'
 Description: Deploys Lambda functions and a step function process for Cloudticity
   Oxygen OS Patching.
 Parameters:
