@@ -1,6 +1,7 @@
 # Release 1.1
 
-Added the ability to define specific security packages to be updated.(Linux)
+* Added the ability to define specific security packages to be updated.(Linux)
+* Added the ability to specify that only security related packages will be updated (Linux)
 
 ============================================================================
 
