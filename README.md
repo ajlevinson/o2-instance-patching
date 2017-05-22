@@ -1,7 +1,9 @@
 # Release 1.1
 
 * Added the ability to define specific security packages to be updated.(Linux)
+  * Add the package name to the manifest file.
 * Added the ability to specify that only security related packages will be updated (Linux)
+  * Specify 'seciruty' in the manifest file where the package name would normally be. All security related updates will be applied.
 
 ============================================================================
 
