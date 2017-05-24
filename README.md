@@ -3,7 +3,7 @@
 * Added the ability to define specific security packages to be updated.(Linux)
   * Add the package name to the [manifest file.](https://github.com/Cloudticity/o2-patcher/blob/master/README.md#manifest-file-structure) 
 * Added the ability to specify that only security related packages will be updated (Linux)
-  * Specify 'seciruty' in the manifest file where the package name would normally be. All security related updates will be applied.
+  * Specify 'seciruty' in the [manifest file](https://github.com/Cloudticity/o2-patcher/blob/master/README.md#manifest-file-structure) where the package name would normally be. All security related updates will be applied.
 
 ============================================================================
 
@@ -28,7 +28,7 @@ Each row contains four elements; elements are separated by commas:
 * One of 3 options: 
   * KB number to apply to Windows instances.
   * Package name to apply to the Linux instances.
-  * the word "security" will ally all securty related patches for Linux (sudo yum -y update --security)
+  * The word "security" will ally all securty related patches for Linux (sudo yum -y update --security)
 ## High-Level Process Flow
 1. The process is initiated by submitting a [json input file](https://github.com/Cloudticity/o2-patcher/blob/master/events/TestFileSample.json) to the Patcher's main loop [Lambda function](https://github.com/Cloudticity/o2-patcher/blob/master/lib/Patcher-Main-Loop.js).
 The various elements in the input file are as follows:
