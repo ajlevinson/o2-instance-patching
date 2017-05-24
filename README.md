@@ -25,7 +25,10 @@ Each row contains four elements; elements are separated by commas:
 * Instance's name as it appears on the aws console.
 * Instance's private IP
 * Boolean flag to indicate restart yes or no.
-* KB number to apply to Windows instances.
+* One of 3 options: 
+  * KB number to apply to Windows instances.
+  * Package name to apply to the Linux instances.
+  * the word "security" will ally all securty related patches for Linux (sudo yum -y update --security)
 ## High-Level Process Flow
 1. The process is initiated by submitting a [json input file](https://github.com/Cloudticity/o2-patcher/blob/master/events/TestFileSample.json) to the Patcher's main loop [Lambda function](https://github.com/Cloudticity/o2-patcher/blob/master/lib/Patcher-Main-Loop.js).
 The various elements in the input file are as follows:
