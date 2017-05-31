@@ -29,10 +29,10 @@ The product is included in the "Cloudticity MSP Portfolio" Service Catalog portf
 ## Manifest File Structure[
 The [manifest file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) is a CSV file. Each row represents a single instance.
 Each row contains four elements; elements are separated by commas:
-1 Instance's name as it appears on the aws console.
-2 Instance's private IP
-3 Boolean flag to indicate restart yes or no.
-4 KB number/s or Linux update package/s to apply to instances.
+1. Instance's name as it appears on the aws console.
+2. Instance's private IP
+3. Boolean flag to indicate restart yes or no.
+4. KB number/s or Linux update package/s to apply to instances.
  *	You can specify multiple KBs or packages for each instance:
    *	For Windows: The KBs must be inside square brackets and separated with comma. see [example file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) for details 
    *	For Linux: The security packages must be inside square brackets and separated with spaces see [example file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) for details
