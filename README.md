@@ -1,5 +1,5 @@
 # Release 2.0 (Please Note: Breaking Changes)
-
+This release has the ability to specify multiple KBs or Packages per instance. Please reviev the [manifest file](https://github.com/Cloudticity/o2-patcher/blob/master/README.md#manifest-file-structure) stracture carefully.
 # Usage
 1. Populate the [manifest file.](https://github.com/Cloudticity/o2-patcher/blob/master/README.md#manifest-file-structure) with the instance name and private IP as well as the package name (Linux) or KB number (Windows)
 2. Upload the manifest file to S3 and make sure your Lambda code can read the manifest file.
