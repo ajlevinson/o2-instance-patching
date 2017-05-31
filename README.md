@@ -34,8 +34,8 @@ Each row contains four elements; elements are separated by commas:
 3. Boolean flag to indicate restart yes or no.
 4. KB number/s or Linux update package/s to apply to instances.
    *	You can specify multiple KBs or packages for each instance:
-   *	For Windows: The KBs must be inside square brackets and separated with comma. see [example file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) for details 
-   *	For Linux: The security packages must be inside square brackets and separated with spaces see [example file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) for details
+    *	For Windows: The KBs must be inside square brackets and separated with comma. see [example file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) for details 
+    *	For Linux: The security packages must be inside square brackets and separated with spaces see [example file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) for details
    * The word "security" will aplly all securty related patches for Linux (sudo yum -y update --security)
 
 ## High-Level Process Flow
