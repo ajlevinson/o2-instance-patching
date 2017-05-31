@@ -26,10 +26,8 @@ The product is included in the "Cloudticity MSP Portfolio" Service Catalog portf
 * [Cloudticity Oxygen OS Patching](https://console.aws.amazon.com/servicecatalog/home?region=us-east-1#/product/details?productId=prod-qzmqvdkm5bpq2)
 
 
-<<<<<<< HEAD
 ## Manifest File Structure[
 The [manifest file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) is a CSV file. Each row represents a single instance.
-=======
 ## Manifest File Structure
 The [manifest file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) is a CSV file. Each row represents a single instance and a single KB.
 This means that if we need to patch an instance with three KBs, that instance will have three rows in the file.
@@ -43,12 +41,11 @@ Each row contains four elements; elements are separated by commas:
 **	You can specify multiple KBs or packages for each instance:
 ***	For Windows: The BKs must be inside square brackets and separated with comma. see [example file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) for details 
 ***	For Linux: The security packages must be inside square brackets and separated with spaces see [example file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) for details
-=======
 * One of 3 options: 
   * KB number to apply to Windows instances.
   * Package name to apply to the Linux instances.
   * The word "security" will ally all securty related patches for Linux (sudo yum -y update --security)
->>>>>>> origin/master
+
 ## High-Level Process Flow
 1. The process is initiated by submitting a [json input file](https://github.com/Cloudticity/o2-patcher/blob/master/events/TestFileSample.json) to the Patcher's main loop [Lambda function](https://github.com/Cloudticity/o2-patcher/blob/master/lib/Patcher-Main-Loop.js).
 The various elements in the input file are as follows:
