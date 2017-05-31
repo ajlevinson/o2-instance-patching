@@ -1,14 +1,11 @@
-<<<<<<< HEAD
 # Release 2.0 (Please Note: Breaking Changes)
 
-=======
 # Usage
 1. Populate the [manifest file.](https://github.com/Cloudticity/o2-patcher/blob/master/README.md#manifest-file-structure) with the instance name and private IP as well as the package name (Linux) or KB number (Windows)
 2. Upload the manifest file to S3 and make sure your Lambda code can read the manifest file.
 3. Locate Lambda called "OS-Patcher-MainLoop" and create an input file for the Lambda according to the structure specified in the [json input file](https://github.com/Cloudticity/o2-patcher/blob/master/events/TestFileSample.json) section.
 4. Run the Lambda function using the input file generated in step 3 above.
 5. Note: For Linux only - You can specify the word 'security' instead of the package name. This will install all security-related packages on the instance.
->>>>>>> origin/master
 
 # Release 1.1
 
@@ -17,7 +14,6 @@
 * Added the ability to specify that only security related packages will be updated (Linux)
   * Specify 'seciruty' in the [manifest file](https://github.com/Cloudticity/o2-patcher/blob/master/README.md#manifest-file-structure) where the package name would normally be. All security related updates will be applied.
 
-============================================================================
 
 # MVP Release
 
