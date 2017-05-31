@@ -33,9 +33,9 @@ Each row contains four elements; elements are separated by commas:
 * Instance's private IP
 * Boolean flag to indicate restart yes or no.
 * KB number/s or Linux update package/s to apply to instances.
-**	You can specify multiple KBs or packages for each instance:
-***	For Windows: The BKs must be inside square brackets and separated with comma. see [example file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) for details 
-***	For Linux: The security packages must be inside square brackets and separated with spaces see [example file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) for details
+*	You can specify multiple KBs or packages for each instance:
+  *	For Windows: The BKs must be inside square brackets and separated with comma. see [example file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) for details 
+  *	For Linux: The security packages must be inside square brackets and separated with spaces see [example file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) for details
 * One of 3 options: 
   * KB number to apply to Windows instances.
   * Package name to apply to the Linux instances.
