@@ -9,9 +9,9 @@
 
 A flowchart of the overall process is [here](https://www.lucidchart.com/invitations/accept/e7f67da3-52ca-4dec-8168-dab91af5f7c7).
 
-The product is included in the "Cloudticity MSP Portfolio" Service Catalog portfolio:
+The product is included in the "Cloudticity - Our Services" Service Catalog portfolio.
 
-## Manifest File Structure[
+## Manifest File Structure
 The [manifest file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) is a CSV file. Each row represents a single instance.
 Each row contains four elements; elements are separated by commas:
 1. Instance's name as it appears on the aws console.
