@@ -1,5 +1,3 @@
-# Release 2.0 (Please Note: Breaking Changes)
-This release has the ability to specify multiple KBs or Packages per instance. Please reviev the [manifest file](https://github.com/Cloudticity/o2-patcher/blob/master/README.md#manifest-file-structure) stracture carefully.
 # Usage
 1. Populate the [manifest file.](https://github.com/Cloudticity/o2-patcher/blob/master/README.md#manifest-file-structure) with the instance name and private IP as well as the package name (Linux) or KB number (Windows)
 2. Upload the manifest file to S3 and make sure your Lambda code can read the manifest file.
@@ -7,24 +5,11 @@ This release has the ability to specify multiple KBs or Packages per instance. P
 4. Run the Lambda function using the input file generated in step 3 above.
 5. Note: For Linux only - You can specify the word 'security' instead of the package name. This will install all security-related packages on the instance.
 
-# Release 1.1
-
-* Added the ability to define specific security packages to be updated.(Linux)
-  * Add the package name to the [manifest file.](https://github.com/Cloudticity/o2-patcher/blob/master/README.md#manifest-file-structure) 
-* Added the ability to specify that only security related packages will be updated (Linux)
-  * Specify 'seciruty' in the [manifest file](https://github.com/Cloudticity/o2-patcher/blob/master/README.md#manifest-file-structure) where the package name would normally be. All security related updates will be applied.
-
-
-# MVP Release
-
-The requirements for the MVP release are [here](http://teamwork.cloudticity.com/#tasks/9745437).
+# Release 2.0
 
 A flowchart of the overall process is [here](https://www.lucidchart.com/invitations/accept/e7f67da3-52ca-4dec-8168-dab91af5f7c7).
 
 The product is included in the "Cloudticity MSP Portfolio" Service Catalog portfolio:
-* [Cloudticity Oxygen Restart Instances](https://console.aws.amazon.com/servicecatalog/home?region=us-east-1#/product/details?productId=prod-xua42lr5bvivs)
-* [Cloudticity Oxygen OS Patching](https://console.aws.amazon.com/servicecatalog/home?region=us-east-1#/product/details?productId=prod-qzmqvdkm5bpq2)
-
 
 ## Manifest File Structure[
 The [manifest file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) is a CSV file. Each row represents a single instance.
