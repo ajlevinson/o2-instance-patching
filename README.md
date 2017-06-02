@@ -1,3 +1,12 @@
+# Install Instructions
+
+The product is included in the "Oxygen Tools for Cloudticity" Service Catalog portfolio.
+The are two products:
+* o2-instance-patching.
+* o2-instance-restarts
+
+Once you run the Service Catalog product, keep all default input values unless you have a specific use-case that requires changing an input value.
+
 # Usage
 1. Populate the [manifest file.](https://github.com/Cloudticity/o2-patcher/blob/master/README.md#manifest-file-structure) with the instance name and private IP as well as the package name (Linux) or KB number (Windows)
 2. Upload the manifest file to S3 and make sure your Lambda code can read the manifest file.
@@ -9,7 +18,6 @@
 
 A flowchart of the overall process is [here](https://www.lucidchart.com/invitations/accept/e7f67da3-52ca-4dec-8168-dab91af5f7c7).
 
-The product is included in the "Cloudticity - Our Services" Service Catalog portfolio.
 
 ## Manifest File Structure
 The [manifest file](https://github.com/Cloudticity/o2-patcher/blob/master/events/ManifestFileSample.csv) is a CSV file. Each row represents a single instance.
