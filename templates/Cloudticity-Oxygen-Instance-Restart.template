@@ -1,33 +1,31 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Deploys Lambda functions and a step function process for Cloudticity
-  Oxygen Restart Instances.
+Description: Deploys Lambda functions and a step function process for Cloudticity Oxygen Restart Instances.
 Parameters:
   RestartWindowsFunctionName:
     Description: (Required) Name for Patchers Restart Windows Lambda FunctionName.
     Type: String
+    Default: o2-Patcher-RestartWindows
   RestartLinuxFunctionName:
     Description: (Required) Name for Patchers Restart Linux Lambda FunctionName.
     Type: String
+    Default: o2-Patcher-RestartLinux
   ExistingTopicARN:
-    Description: (Required) When errors occur on this function, a CloudWatch metric
-      captures this.
+    Description: (Required) When errors occur on this function, a CloudWatch metric captures this.
     Type: String
   S3BucketwithLambdaCode:
     Description: (Required) What S3 bucket is your function in?
     Type: String
+    Default: cloudticity-public-utilities
   RestartWindowsS3FilewithLambdaCode:
-    Description: (Required) Inside of the S3 bucket, what is the folder/filename
-      of the RestartWindowsLambda function?
+    Description: (Required) Inside of the S3 bucket, what is the folder/filename of the RestartWindowsLambda function?
     Type: String
-    Default: folder/code.zip
+    Default: o2-Patcher/zip/Reboot-Windows-patcher.zip
   RestartLinuxS3FilewithLambdaCode:
-    Description: (Required) Inside of the S3 bucket, what is the folder/filename
-      of the RestartLinuxLambda function?
+    Description: (Required) Inside of the S3 bucket, what is the folder/filename of the RestartLinuxLambda function?
     Type: String
-    Default: folder/code.zip
+    Default: o2-Patcher/zip/Reboot-Linux-patcher.zip
   FunctionHandler:
-    Description: (Required) The name of the function (within your source code)
-      that Lambda calls to start running your code
+    Description: (Required) The name of the function (within your source code) that Lambda calls to start running your code
     Type: String
     Default: index.update
   GetInstancePlatformLambdaARN:
