@@ -1,49 +1,48 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Deploys Lambda functions and a step function process for Cloudticity
-  Oxygen OS Patching.
+Description: Deploys Lambda functions and a step function process for Cloudticity Oxygen OS Patching.
 Parameters:
   MainLoopFunctionName:
     Description: (Required) Name for Patchers main loop Lambda FunctionName.
     Type: String
+    Default: o2-Patcher-MainLoop
   GetInstancePlatformFunctionName:
     Description: (Required) Name for Patchers GetInstancePlatform Lambda FunctionName.
     Type: String
+    Default: o2-Patcher-GetInstancePlatform
   PatchWindowsFunctionName:
     Description: (Required) Name for Patchers PatchWindows Lambda FunctionName.
     Type: String
+    Default: o2-Patcher-PatchWindows
   PatchLinuxFunctionName:
     Description: (Required) Name for Patchers PatchLinux Lambda FunctionName.
     Type: String
+    Default: o2-Patcher-PatchLinux
   NewTopicEmail:
-    Description: (Required) When errors occur on this function, a CloudWatch metric
-      captures this.
+    Description: (Required) When errors occur on this function, a CloudWatch metric captures this.
     Type: String
+    Default: support@cloudticity.com
   S3BucketwithLambdaCode:
     Description: (Required) What S3 bucket is your function in?
     Type: String
+    Default: cloudticity-public-utilities
   MainLoopS3FilewithLambdaCode:
-    Description: (Required) Inside of the S3 bucket, what is the folder/filename
-      of the MainLoop function?
+    Description: (Required) Inside of the S3 bucket, what is the folder/filename of the MainLoop function?
     Type: String
-    Default: folder/code.zip
+    Default: o2-Patcher/zip/Patcher-Main-Loop.zip
   GetInstancePlatformS3FilewithLambdaCode:
-    Description: (Required) Inside of the S3 bucket, what is the folder/filename
-      of the GetInstancePlatform function?
+    Description: (Required) Inside of the S3 bucket, what is the folder/filename of the GetInstancePlatform function?
     Type: String
-    Default: folder/code.zip
+    Default: o2-Patcher/zip/GetInstancePlatform.zip
   PatchWindowsS3FilewithLambdaCode:
-    Description: (Required) Inside of the S3 bucket, what is the folder/filename
-      of the PatchWindowsLambda function?
+    Description: (Required) Inside of the S3 bucket, what is the folder/filename of the PatchWindowsLambda function?
     Type: String
-    Default: folder/code.zip
+    Default: o2-Patcher/zip/Windows_updates-patcher.zip
   PatchLinuxS3FilewithLambdaCode:
-    Description: (Required) Inside of the S3 bucket, what is the folder/filename
-      of the PatchLinuxLambda function?
+    Description: (Required) Inside of the S3 bucket, what is the folder/filename of the PatchLinuxLambda function?
     Type: String
-    Default: folder/code.zip
+    Default: o2-Patcher/zip/linux_updates-patcher.zip
   FunctionHandler:
-    Description: (Required) The name of the function (within your source code)
-      that Lambda calls to start running your code
+    Description: (Required) The name of the function (within your source code) that Lambda calls to start running your code
     Type: String
     Default: index.update
 Resources:
