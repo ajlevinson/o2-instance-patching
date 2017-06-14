@@ -14,7 +14,7 @@ Once you run the Service Catalog product, keep all default input values unless y
 4. Run the Lambda function using the input file generated in step 3 above.
 5. Note: For Linux only - You can specify the word 'security' instead of the package name. This will install all security-related packages on the instance.
 
-# Release 2.0
+# Release 1.0
 
 A flowchart of the overall process is [here](https://www.lucidchart.com/invitations/accept/e7f67da3-52ca-4dec-8168-dab91af5f7c7).
 
