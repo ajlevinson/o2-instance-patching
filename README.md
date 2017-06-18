@@ -47,6 +47,3 @@ The various elements in the input file are as follows:
 * [Patch Linux instance](https://github.com/Cloudticity/o2-patcher/blob/master/lib/linux_updates-patcher.js).
 * [Restart Windows instance](https://github.com/Cloudticity/o2-patcher/blob/master/lib/Reboot-Windows-Instance-patcher.js)
 * [Restart Linux instance](https://github.com/Cloudticity/o2-patcher/blob/master/lib/Reboot-Linux-Instance-patcher.js).
-
-## To-Do
-Requirements list can be found [here](https://github.com/Cloudticity/o2-patcher/wiki)
